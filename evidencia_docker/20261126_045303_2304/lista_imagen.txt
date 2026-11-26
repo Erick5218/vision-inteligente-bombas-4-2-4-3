@@ -1,0 +1,2 @@
+REPOSITORY      TAG       IMAGE ID                                                                  CREATED         SIZE
+vision-bombas   4.2       sha256:9a7d6b30458344386ee917b64e4e921613eeb4f01b2b7e06d20e0982e268c7c7   7 minutes ago   1.06GB

@@ -1,0 +1,69 @@
+{
+  "imagen_docker": "sha256:9a7d6b30458344386ee917b64e4e921613eeb4f01b2b7e06d20e0982e268c7c7",
+  "modos": {
+    "lote": {
+      "resumen": {
+        "modo": "lote",
+        "imagenes": 33,
+        "lote": 8,
+        "intervalo_simulado_s": 0,
+        "carga_modelo_ms": 4051.333,
+        "procesamiento_s": 136.722781,
+        "operacion_s": 136.724001,
+        "promedio_procesamiento_ms_por_imagen": 4143.115,
+        "imagenes_por_s_procesamiento": 0.241,
+        "imagenes_por_s_operacion": 0.241,
+        "calentamiento_imagenes": 1,
+        "python": "3.12.16",
+        "torch": "2.5.1+cpu",
+        "torchvision": "0.20.1+cpu",
+        "pillow": "11.1.0",
+        "sistema": "Linux-6.18.60-0-virt-x86_64-with-glibc2.36",
+        "cpu": "QEMU TCG CPU version 2.5+",
+        "hilos": 3,
+        "dispositivo": "cpu",
+        "modelo_sha256": "360c9316d1957e10c5076ae125bc0db2786063f89606a814b614372a81e7c69d",
+        "alcance": "Clasificación de recortes; validación reutilizada de la Actividad 3.3."
+      },
+      "aciertos": 32,
+      "coinciden_con_3_3": 33
+    },
+    "flujo": {
+      "resumen": {
+        "modo": "flujo",
+        "imagenes": 33,
+        "lote": 1,
+        "intervalo_simulado_s": 0.1,
+        "carga_modelo_ms": 4212.15,
+        "procesamiento_s": 140.391839,
+        "operacion_s": 143.634838,
+        "promedio_procesamiento_ms_por_imagen": 4254.298,
+        "imagenes_por_s_procesamiento": 0.235,
+        "imagenes_por_s_operacion": 0.23,
+        "calentamiento_imagenes": 1,
+        "python": "3.12.16",
+        "torch": "2.5.1+cpu",
+        "torchvision": "0.20.1+cpu",
+        "pillow": "11.1.0",
+        "sistema": "Linux-6.18.60-0-virt-x86_64-with-glibc2.36",
+        "cpu": "QEMU TCG CPU version 2.5+",
+        "hilos": 3,
+        "dispositivo": "cpu",
+        "modelo_sha256": "360c9316d1957e10c5076ae125bc0db2786063f89606a814b614372a81e7c69d",
+        "alcance": "Clasificación de recortes; validación reutilizada de la Actividad 3.3."
+      },
+      "aciertos": 32,
+      "coinciden_con_3_3": 33
+    }
+  },
+  "coincidencias": 33,
+  "foto_externa": {
+    "archivo": "impulsor_bomba_pozo.png",
+    "prediccion": "tazon",
+    "confianza_pct": "85.467094",
+    "p_impulsor": "0.14532907",
+    "p_tazon": "0.85467094",
+    "grupo": "1"
+  },
+  "fotos_propias": []
+}

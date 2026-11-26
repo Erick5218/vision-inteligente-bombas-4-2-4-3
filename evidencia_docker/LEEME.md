@@ -1,5 +1,5 @@
 # Evidencia de la prueba en Docker
 
-Ejecuta `ejecutar_docker.bat` con Docker Desktop abierto en Windows. El script guarda una carpeta por ejecución con los registros de construcción, el identificador de imagen, los tiempos y las predicciones. Usa la carpeta cuya prueba tenga `ESTADO_EJECUCION.txt`.
+Cada carpeta con `ESTADO_EJECUCION.txt` contiene una prueba completa. Incluye la versión del motor, la construcción, la huella de la imagen, los tiempos y las predicciones de lote, flujo y fotografía externa. La ejecución de referencia se hizo con Docker Engine en una máquina virtual Linux.
 
-Copia el archivo `mediciones_docker.tex` de esa carpeta a `reporte/` y recompila `main.tex` para integrar las mediciones. En la copia entregada, las pruebas medidas están en `evidencia_local/` y corresponden a Python en Linux fuera de Docker.
+Para repetirla, ejecuta `ejecutar_docker.bat` con Docker Desktop abierto en Windows o `bash ejecutar_docker.sh` en Linux. Si actualizas el reporte, copia el archivo `mediciones_docker.tex` de la ejecución a `reporte/` y recompila `main.tex`. En `evidencia_local/` están las mediciones de referencia en Python y CPU.

@@ -1,6 +1,7 @@
 @echo off
 setlocal EnableExtensions DisableDelayedExpansion
 cd /d "%~dp0" || exit /b 1
+set "DOCKER_BUILDKIT=1"
 
 for /f %%T in ('powershell.exe -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "MARCA=%%T"
 if not defined MARCA exit /b 1

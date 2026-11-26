@@ -1,0 +1,2 @@
+33 imágenes | lote | 4143.115 ms/imagen (promedio de procesamiento)
+Salida: lote/predicciones.csv, tiempos.csv y resumen.json

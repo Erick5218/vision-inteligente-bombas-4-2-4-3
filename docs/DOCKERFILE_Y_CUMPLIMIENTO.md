@@ -1,19 +1,19 @@
 # Dockerfile y revisión de requisitos
 
-`FROM` selecciona Python 3.12 sobre Debian slim. `WORKDIR` fija `/app` como carpeta de ejecución. `COPY` incorpora requisitos, código, pesos y datos. `RUN` instala las bibliotecas fijadas y prepara la salida. `ENTRYPOINT` establece el script de inferencia; `CMD` aporta los argumentos de la demo por lote. Los argumentos escritos después del nombre de imagen sustituyen el comando por omisión. No se expone un puerto porque la entrada y salida son archivos.
+`FROM` selecciona Python 3.12 sobre Debian slim. `WORKDIR` fija `/app` como carpeta de ejecución. `COPY` incorpora requisitos, código, pesos y datos de inferencia. `RUN` instala las bibliotecas fijadas y prepara la salida. `ENTRYPOINT` establece el script de inferencia y `CMD` aporta los argumentos de la demo por lote. Los argumentos escritos después del nombre de imagen sustituyen el comando por omisión.
 
-La imagen base conserva la rama 3.12 y puede actualizar su revisión. `requirements.txt` fija dependencias directas; los paquetes transitivos pueden cambiar. El registro de construcción y `id_imagen.txt` identifican la imagen real utilizada. Una repetición exacta requeriría conservar esa imagen o fijar su digest y todas las dependencias después de la construcción verificada.
+La imagen base conserva la rama 3.12 y `requirements.txt` fija las dependencias directas. El registro de construcción y `id_imagen.txt` identifican la imagen que se usó para las pruebas. BuildKit permite montar de forma temporal los certificados del entorno de construcción cuando se usa un proxy.
 
-| Solicitud o criterio | Archivo o evidencia | Estado al preparar el paquete |
+| Solicitud o criterio | Archivo o evidencia | Verificación |
 |---|---|---|
 | Estructura mínima: modelo, script, requirements, README. | Raíz del paquete, `models/` y `src/`. | Preparada. |
-| Dockerfile. | `Dockerfile`. | Preparado; construcción pendiente. |
-| Simular despliegue con medición. | Scripts `ejecutar_docker` y resultados que generan. | Pendiente de ejecución en Docker. |
-| Paquete profesional. | Proyecto autónomo con demo, datos y manual. | Preparado. |
-| Evidencia de ejecución del contenedor. | Registros, identificador de imagen y resultados en `evidencia_docker/`. | Pendiente. |
+| Dockerfile. | `Dockerfile`. | Imagen construida con Docker Engine. |
+| Simular despliegue con medición. | CSV y JSON de lote y flujo. | Tiempos medidos en el contenedor. |
+| Paquete profesional. | Dataset, modelo, pipeline y manual. | Integrados en el repositorio. |
+| Evidencia de ejecución del contenedor. | Registros, identificador de imagen y resultados en `evidencia_docker/`. | Incluye lote, flujo y fotografía externa. |
 | Dominio conceptual. | Objetivo, explicación de instrucciones y límites. | Documentado. |
-| Desarrollo técnico. | Pipeline local comprobado; mismo modelo y script de 4.1. | Local comprobado; Docker pendiente. |
-| Análisis de resultados. | Referencia CPU y comparación propuesta con ejecución Docker. | Referencia local; falta análisis del contenedor. |
-| Presentación y entregables. | README, estructura, comandos y archivos editables. | Falta incorporar evidencia Docker para entrega completa. |
+| Desarrollo técnico. | Modelo y script de 4.1. | Verificación de huellas y ejecución en Docker. |
+| Análisis de resultados. | Referencia CPU, mediciones de Docker y foto externa. | Incluidos en el PDF. |
+| Presentación y entregables. | README, repositorio y reporte breve. | Entrega conjunta en la actividad 4.3. |
 
-La ejecución local no demuestra que la imagen construya o arranque correctamente. No debe marcarse 4.2 como terminada hasta ejecutar el contenedor y revisar su salida. Un ensayo CPU en Docker cubre la alternativa de contenedor del cuaderno; no equivale a una prueba sobre un dispositivo edge físico.
+El cuaderno de la Unidad 4 admite la simulación de despliegue con contenedor. Las mediciones de Docker corresponden a una máquina virtual Linux con CPU emulada.

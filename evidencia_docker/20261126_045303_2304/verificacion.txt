@@ -1,0 +1,4 @@
+Docker procesó 33 recortes en cada modalidad.
+Coincidencias lote y flujo: 33/33.
+Foto externa: tazon (85.467094%).
+Fotos propias procesadas: 0.
