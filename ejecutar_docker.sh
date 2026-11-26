@@ -13,30 +13,41 @@ if [[ "$tipo" != linux ]]; then
   exit 1
 fi
 echo "Construyendo vision-bombas:4.2."
-docker build -t vision-bombas:4.2 . > "$evidencia/construccion.txt" 2>&1
-docker image inspect --format '{{.Id}}' vision-bombas:4.2 > "$evidencia/id_imagen.txt"
+argumentos_certificados=()
+if [[ -n ${DOCKER_CERTIFICADOS_PROXY:-} ]]; then
+  argumentos_certificados=(--secret "id=certificados_proxy,src=$DOCKER_CERTIFICADOS_PROXY")
+fi
+docker build --build-arg HTTP_PROXY --build-arg HTTPS_PROXY "${argumentos_certificados[@]}" \
+  -t vision-bombas:4.2 . \
+  > "$evidencia/construccion.txt" 2>&1
+imagen=$(docker image inspect --format '{{.Id}}' vision-bombas:4.2)
+printf '%s\n' "$imagen" > "$evidencia/id_imagen.txt"
 montaje="type=bind,source=$evidencia,target=/app/outputs"
-docker run --rm --network none --mount "$montaje" vision-bombas:4.2 \
+docker run --rm --network none --mount "$montaje" "$imagen" \
   --carpeta data/validacion --modo lote --lote 8 --salida outputs/lote \
   > "$evidencia/ejecucion_lote.txt" 2>&1
-docker run --rm --network none --mount "$montaje" vision-bombas:4.2 \
+docker run --rm --network none --mount "$montaje" "$imagen" \
   --carpeta data/validacion --modo flujo --intervalo 0.1 --salida outputs/flujo \
   > "$evidencia/ejecucion_flujo.txt" 2>&1
+
+docker run --rm --network none --mount "$montaje" "$imagen" \
+  --imagen data/prueba_externa/impulsor_bomba_pozo.png --salida outputs/externa \
+  > "$evidencia/ejecucion_externa.txt" 2>&1
 
 shopt -s nullglob nocaseglob
 propias=(data/propias/*.{jpg,jpeg,png,bmp,tif,tiff})
 if (( ${#propias[@]} > 0 )); then
   docker run --rm --network none --mount "$montaje" \
     --mount "type=bind,source=$PWD/data/propias,target=/app/fotos_propias,readonly" \
-    vision-bombas:4.2 --carpeta fotos_propias --salida outputs/propias \
+    "$imagen" --carpeta fotos_propias --salida outputs/propias \
     > "$evidencia/ejecucion_propias.txt" 2>&1
   cat "$evidencia/propias/predicciones.csv"
 else
-  echo 'Prueba con foto nueva pendiente.' > "$evidencia/ejecucion_propias.txt"
+  echo 'No se añadieron fotos propias para esta ejecución.' > "$evidencia/ejecucion_propias.txt"
 fi
 docker run --rm --network none --mount "$montaje" --entrypoint python \
-  vision-bombas:4.2 src/resumir_evidencia.py outputs \
+  "$imagen" src/resumir_evidencia.py outputs \
   > "$evidencia/verificacion.txt" 2>&1
 date -u '+Ejecución real de Docker terminada: %Y-%m-%dT%H:%M:%SZ' > "$evidencia/ESTADO_EJECUCION.txt"
-cat "$evidencia/ejecucion_lote.txt" "$evidencia/verificacion.txt"
+cat "$evidencia/ejecucion_lote.txt" "$evidencia/ejecucion_externa.txt" "$evidencia/verificacion.txt"
 echo "Evidencia disponible en $evidencia."

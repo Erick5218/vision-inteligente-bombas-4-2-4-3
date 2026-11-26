@@ -1,0 +1,23 @@
+{
+  "modo": "lote",
+  "imagenes": 1,
+  "lote": 8,
+  "intervalo_simulado_s": 0,
+  "carga_modelo_ms": 169.606,
+  "procesamiento_s": 0.046653,
+  "operacion_s": 0.046671,
+  "promedio_procesamiento_ms_por_imagen": 46.653,
+  "imagenes_por_s_procesamiento": 21.435,
+  "imagenes_por_s_operacion": 21.427,
+  "calentamiento_imagenes": 1,
+  "python": "3.12.14",
+  "torch": "2.5.1+cpu",
+  "torchvision": "0.20.1+cpu",
+  "pillow": "11.1.0",
+  "sistema": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "cpu": "AMD EPYC 9V74 80-Core Processor",
+  "hilos": 3,
+  "dispositivo": "cpu",
+  "modelo_sha256": "360c9316d1957e10c5076ae125bc0db2786063f89606a814b614372a81e7c69d",
+  "alcance": "Clasificación de recortes; validación reutilizada de la Actividad 3.3."
+}

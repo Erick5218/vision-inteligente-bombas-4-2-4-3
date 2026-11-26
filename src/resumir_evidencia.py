@@ -35,7 +35,8 @@ def revisar_modalidad(evidencia, modo, referencia, huella):
     return datos, {fila['archivo']: fila['prediccion'] for fila in filas}
 
 
-def tabla_latex(modos, coincidencias, propias, imagen):
+def tabla_latex(modos, coincidencias, externa, propias, imagen):
+    clases = {'impulsor': 'impulsor', 'tazon': 'tazón'}
     def fila(modo, datos):
         s = datos['resumen']
         return (f"{modo.capitalize()} & {s['imagenes']} & {s['procesamiento_s']:.3f} & "
@@ -52,15 +53,17 @@ def tabla_latex(modos, coincidencias, propias, imagen):
         r'\bottomrule\end{tabular}\end{center}',
         f'El lote y el flujo coincidieron en {coincidencias} clases predichas.',
     ]
-    if not propias:
-        texto.append('La prueba independiente queda pendiente de una fotografía nueva.')
-    else:
-        for i, r in enumerate(propias, 1):
-            clase = {'impulsor': 'impulsor', 'tazon': 'tazón'}[r['prediccion']]
-            texto.append(
-                f"En la foto propia {i} el modelo predijo {clase} "
-                f"con una confianza de {float(r['confianza_pct']):.2f}\\%."
-            )
+    clase_externa = clases[externa['prediccion']]
+    texto.append(
+        f"En la fotografía externa, identificada como impulsor, el modelo predijo "
+        f"{clase_externa} con {float(externa['confianza_pct']):.2f}\\% de confianza."
+    )
+    for i, r in enumerate(propias, 1):
+        clase = clases[r['prediccion']]
+        texto.append(
+            f"En la foto propia {i} el modelo predijo {clase} "
+            f"con una confianza de {float(r['confianza_pct']):.2f}\\%."
+        )
     return '\n'.join(texto) + '\n'
 
 
@@ -76,17 +79,21 @@ def main():
     lote, plote = revisar_modalidad(evidencia, 'lote', referencia, huella)
     flujo, pflujo = revisar_modalidad(evidencia, 'flujo', referencia, huella)
     coincidencias = sum(plote[n] == pflujo[n] for n in plote)
+    externa, = leer_csv(evidencia / 'externa/predicciones.csv')
+    if externa['archivo'] != 'impulsor_bomba_pozo.png':
+        raise ValueError('El CSV no contiene la imagen externa esperada.')
     ruta_propias = evidencia / 'propias/predicciones.csv'
     propias = leer_csv(ruta_propias) if ruta_propias.is_file() else []
     modos = {'lote': lote, 'flujo': flujo}
     resultados = {'imagen_docker': imagen, 'modos': modos, 'coincidencias': coincidencias,
-                  'fotos_propias': propias}
+                  'foto_externa': externa, 'fotos_propias': propias}
     (evidencia / 'verificacion.json').write_text(
         json.dumps(resultados, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     (evidencia / 'mediciones_docker.tex').write_text(
-        tabla_latex(modos, coincidencias, propias, imagen), encoding='utf-8')
+        tabla_latex(modos, coincidencias, externa, propias, imagen), encoding='utf-8')
     print(f'Docker procesó {len(plote)} recortes en cada modalidad.')
     print(f'Coincidencias lote y flujo: {coincidencias}/{len(plote)}.')
+    print(f"Foto externa: {externa['prediccion']} ({externa['confianza_pct']}%).")
     print(f'Fotos propias procesadas: {len(propias)}.')
 
 

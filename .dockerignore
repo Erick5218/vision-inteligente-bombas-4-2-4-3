@@ -5,6 +5,7 @@ outputs
 evidencia_docker
 evidencia_local
 data/propias
+data/origen/dataset_bombas.zip
 reporte
 docs
 *.zip

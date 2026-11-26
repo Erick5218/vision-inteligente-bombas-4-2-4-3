@@ -4,7 +4,9 @@
 
 Erick Martín Rodríguez Baeza · 26ZPM034 · Docente I.MT. Luis Alberto Espejo Ponce
 
-Se reutilizan los pesos de ResNet18 de la actividad 3.3 y el script de inferencia de la 4.1. El proyecto recibe recortes de piezas individuales y muestra la clase predicha y su confianza. El archivo `Dockerfile` empaqueta el código, los pesos, las dependencias de CPU y los 33 recortes incluidos.
+Se reutilizan los pesos de ResNet18 de la actividad 3.3 y el script de inferencia de la 4.1. El proyecto recibe recortes de piezas individuales y muestra la clase predicha y su confianza. El `Dockerfile` empaqueta el código, los pesos, las dependencias de CPU, los recortes de validación y una fotografía externa.
+
+El dataset original de 25 fotografías y sus anotaciones se incluye en `data/origen/dataset_bombas.zip`. Los recortes en `data/validacion/` proceden de la partición de validación de 3.3. La copia del dataset queda disponible en el repositorio. La inferencia en el contenedor usa los recortes, la fotografía externa y los pesos entrenados.
 
 ## Ejecutar en Windows
 
@@ -19,7 +21,13 @@ Se reutilizan los pesos de ResNet18 de la actividad 3.3 y el script de inferenci
 
 En Linux el equivalente es `bash ejecutar_docker.sh`. La primera construcción descarga la imagen base y las bibliotecas. Una vez creada la imagen, la inferencia corre con CPU y archivos locales. Python viene dentro de la imagen.
 
-Cada ejecución guarda una carpeta nueva en `evidencia_docker/`. Encontrarás la versión de Docker, el registro de construcción, el identificador de imagen, los CSV de predicciones y tiempos, el resumen JSON y la comparación con la actividad 3.3. Si el script encuentra una foto nueva, guarda su resultado en `propias/`. La foto queda fuera del repositorio. `ESTADO_EJECUCION.txt` aparece cuando termina la comprobación.
+Cada ejecución guarda una carpeta nueva en `evidencia_docker/`. Encontrarás la versión de Docker, el registro de construcción, el identificador de imagen, los CSV de predicciones y tiempos, el resumen JSON y la comparación con la actividad 3.3. La fotografía externa incluida se prueba siempre y su resultado se guarda en `externa/`. Si el script encuentra fotos propias, guarda sus resultados en `propias/`. `ESTADO_EJECUCION.txt` aparece cuando termina la comprobación.
+
+Para demostrar una inferencia individual después de construir la imagen, ejecuta el comando siguiente desde PowerShell o Bash. La procedencia de la fotografía está en `data/prueba_externa/FUENTE.md`.
+
+```text
+docker run --rm vision-bombas:4.2 --imagen data/prueba_externa/impulsor_bomba_pozo.png
+```
 
 ## Reporte y evidencia
 
@@ -27,7 +35,7 @@ El PDF incluido documenta la prueba en CPU realizada en Linux fuera de Docker. E
 
 Una vez que el script termine, copia `mediciones_docker.tex` de la carpeta de esa ejecución sobre `reporte/mediciones_docker.tex`. Abre `reporte/main.tex` y compila con pdfLaTeX. En Overleaf, sube los archivos de `reporte/` junto con la carpeta `assets/`. El reporte conserva portada, texto y tablas editables. Agrega la URL privada en la definición de `\LigaRepositorio` en `main.tex` cuando la tengas. Usa los CSV y registros de Docker si el profesor solicita evidencia adicional.
 
-El tiempo de procesamiento suma lectura, preparación, inferencia y posprocesamiento. En modo flujo, el tiempo de operación incluye las pausas de 0.1 s. Las 33 imágenes se reutilizan para comprobar consistencia. Una foto tomada después del entrenamiento prueba si el comando admite una entrada nueva y proporciona un ejemplo de su comportamiento.
+El tiempo de procesamiento suma lectura, preparación, inferencia y posprocesamiento. En modo flujo, el tiempo de operación incluye las pausas de 0.1 s. Las 33 imágenes se reutilizan para comprobar consistencia. La foto externa prueba que el comando admite una entrada que quedó fuera del entrenamiento y de la validación.
 
 ## Publicar en un repositorio privado
 
