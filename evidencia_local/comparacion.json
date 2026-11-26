@@ -1,0 +1,79 @@
+{
+  "entorno": "Linux en CPU, prueba nativa fuera de Docker",
+  "imagenes": 33,
+  "correctas": 32,
+  "iguales_3_3": 33,
+  "iguales_lote_flujo": 33,
+  "matriz": {
+    "impulsor": {
+      "impulsor": 15,
+      "tazon": 1
+    },
+    "tazon": {
+      "impulsor": 0,
+      "tazon": 17
+    }
+  },
+  "individual": {
+    "archivo": "4_000.png",
+    "prediccion": "impulsor",
+    "confianza_pct": "95.852828",
+    "p_impulsor": "0.95852828",
+    "p_tazon": "0.04147172",
+    "grupo": "1"
+  },
+  "errores": [
+    {
+      "archivo": "1_008.png",
+      "real": "impulsor",
+      "prediccion": "tazon",
+      "confianza_pct": "60.429263"
+    }
+  ],
+  "resumen_lote": {
+    "modo": "lote",
+    "imagenes": 33,
+    "lote": 8,
+    "intervalo_simulado_s": 0,
+    "carga_modelo_ms": 303.586,
+    "procesamiento_s": 0.917978,
+    "operacion_s": 0.918055,
+    "promedio_procesamiento_ms_por_imagen": 27.818,
+    "imagenes_por_s_procesamiento": 35.949,
+    "imagenes_por_s_operacion": 35.946,
+    "calentamiento_imagenes": 1,
+    "python": "3.12.14",
+    "torch": "2.5.1+cpu",
+    "torchvision": "0.20.1+cpu",
+    "pillow": "11.1.0",
+    "sistema": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "hilos": 3,
+    "dispositivo": "cpu",
+    "modelo_sha256": "360c9316d1957e10c5076ae125bc0db2786063f89606a814b614372a81e7c69d",
+    "alcance": "Clasificación de recortes; validación reutilizada de la Actividad 3.3."
+  },
+  "resumen_flujo": {
+    "modo": "flujo",
+    "imagenes": 33,
+    "lote": 1,
+    "intervalo_simulado_s": 0.1,
+    "carga_modelo_ms": 273.499,
+    "procesamiento_s": 1.106871,
+    "operacion_s": 4.313494,
+    "promedio_procesamiento_ms_por_imagen": 33.542,
+    "imagenes_por_s_procesamiento": 29.814,
+    "imagenes_por_s_operacion": 7.65,
+    "calentamiento_imagenes": 1,
+    "python": "3.12.14",
+    "torch": "2.5.1+cpu",
+    "torchvision": "0.20.1+cpu",
+    "pillow": "11.1.0",
+    "sistema": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "hilos": 3,
+    "dispositivo": "cpu",
+    "modelo_sha256": "360c9316d1957e10c5076ae125bc0db2786063f89606a814b614372a81e7c69d",
+    "alcance": "Clasificación de recortes; validación reutilizada de la Actividad 3.3."
+  }
+}

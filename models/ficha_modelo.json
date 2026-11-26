@@ -1,0 +1,32 @@
+{
+  "modelo_procedencia": "Actividad 3.3, ResNet18, mejor época 3",
+  "modelo_sha256": "360c9316d1957e10c5076ae125bc0db2786063f89606a814b614372a81e7c69d",
+  "clases": [
+    "impulsor",
+    "tazon"
+  ],
+  "imagenes_validacion": 33,
+  "fotos_origen_validacion": [
+    "1.jpeg",
+    "22.jpeg",
+    "4.jpeg"
+  ],
+  "transformacion": {
+    "RGB": true,
+    "tamano": [
+      224,
+      224
+    ],
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "uso": "Demostración de inferencia. Validación reutilizada, sin nueva prueba independiente."
+}

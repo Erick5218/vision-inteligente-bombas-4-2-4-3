@@ -1,0 +1,5 @@
+Prueba nativa en Linux, CPU, fuera de Docker.
+python src/pipeline_inferencia.py --imagen data/ejemplos/4_000.png --salida evidencia_local/individual
+
+1 imágenes | lote | 31.761 ms/imagen (promedio de procesamiento)
+Salida: individual/predicciones.csv, tiempos.csv y resumen.json

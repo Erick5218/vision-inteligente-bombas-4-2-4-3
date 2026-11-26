@@ -1,0 +1,31 @@
+{
+  "classes": [
+    "impulsor",
+    "tazon"
+  ],
+  "seed": 42,
+  "train_samples": 279,
+  "val_samples": 33,
+  "epochs": 10,
+  "best_epoch": 3,
+  "accuracy_val": 0.9696969696969697,
+  "correct": 32,
+  "confusion_matrix": [
+    [
+      15,
+      1
+    ],
+    [
+      0,
+      17
+    ]
+  ],
+  "training_seconds": 88.65823978999993,
+  "started_utc": "2026-10-29T18:02:39.399625+00:00",
+  "python": "3.12.14",
+  "torch": "2.5.1+cpu",
+  "torchvision": "0.20.1+cpu",
+  "device": "cpu",
+  "cpu_threads": 3,
+  "cpu_model": "AMD EPYC 9V74 80-Core Processor"
+}

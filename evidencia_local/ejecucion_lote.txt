@@ -1,0 +1,5 @@
+Prueba nativa en Linux, CPU, fuera de Docker.
+python src/pipeline_inferencia.py --carpeta data/validacion --modo lote --lote 8 --salida evidencia_local/lote
+
+33 imágenes | lote | 27.818 ms/imagen (promedio de procesamiento)
+Salida: lote/predicciones.csv, tiempos.csv y resumen.json
