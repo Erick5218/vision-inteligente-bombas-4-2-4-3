@@ -39,13 +39,13 @@ El tiempo de procesamiento suma lectura, preparación, inferencia y posprocesami
 
 ## Repositorio de la entrega
 
-La entrega conjunta está en [el repositorio privado de GitHub](https://github.com/Erick5218/vision-inteligente-bombas-4-2-4-3). Con acceso autorizado, se puede clonar la rama principal y ejecutar las pruebas desde esa carpeta.
+La entrega conjunta está en [el repositorio de GitHub](https://github.com/Erick5218/vision-inteligente-bombas-4-2-4-3). Se puede clonar la rama principal y ejecutar las pruebas desde esa carpeta.
 
 ```text
 git clone https://github.com/Erick5218/vision-inteligente-bombas-4-2-4-3.git
 ```
 
-En la actividad 4.3 se presenta el PDF y la liga del repositorio. El acceso del profesor se configura desde el repositorio privado. La imagen de Docker se puede reconstruir con el Dockerfile y conservar en el equipo donde se ejecute.
+El PDF que se presenta en la actividad 4.3 incluye la liga del repositorio. La imagen de Docker se puede reconstruir con el Dockerfile y conservar en el equipo donde se ejecute.
 
 ## Archivos principales
 
