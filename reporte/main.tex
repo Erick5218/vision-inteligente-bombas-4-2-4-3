@@ -2,20 +2,18 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\IfFileExists{spanish.ldf}{\usepackage[spanish,es-nodecimaldot]{babel}}{\usepackage{babel}}
+\usepackage[spanish,es-nodecimaldot]{babel}
 \usepackage[letterpaper,margin=2.5cm]{geometry}
-\usepackage{graphicx,booktabs,array,float,microtype,enumitem,amsmath}
-\usepackage[table]{xcolor}
-\usepackage{caption}
+\usepackage{graphicx,booktabs,tabularx}
 \usepackage[hidelinks]{hyperref}
+
 \urlstyle{same}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt}
-\renewcommand{\arraystretch}{1.20}
-\captionsetup{font=small,labelfont=bf}
-\renewcommand{\figurename}{Figura}
-\renewcommand{\tablename}{Tabla}
-\setlist[itemize]{leftmargin=*,nosep}
+\setlength{\intextsep}{9pt plus 2pt minus 2pt}
+\renewcommand{\arraystretch}{1.16}
+\raggedbottom
+
 \newcommand{\Programa}{Maestría en Inteligencia Artificial}
 \newcommand{\Asignatura}{Visión Inteligente}
 \newcommand{\Estudiante}{Erick Martín Rodríguez Baeza}
@@ -23,12 +21,10 @@
 \newcommand{\Docente}{I.MT. Luis Alberto Espejo Ponce}
 \newcommand{\FechaEntrega}{25 de noviembre de 2026}
 \newcommand{\Lugar}{Zacapoaxtla, Puebla}
-
-\newenvironment{hangparas}[2]{\setlength{\parindent}{0pt}\setlength{\leftskip}{#1}\setlength{\parindent}{-#1}}{}
-
 \newcommand{\Actividad}{Actividades 4.2 y 4.3}
 \newcommand{\TituloActividad}{Empaquetado y despliegue del clasificador\\de impulsores y tazones}
-\newcommand*{\LigaRepositorio}{https://github.com/Erick5218/vision-inteligente-bombas-4-2-4-3}
+\newcommand{\LigaRepositorio}{https://github.com/Erick5218/vision-inteligente-bombas-4-2-4-3}
+
 \begin{document}
 \renewcommand{\tablename}{Tabla}
 \hypersetup{pageanchor=false}
@@ -75,74 +71,145 @@
 \setcounter{page}{1}
 \hypersetup{pageanchor=true}
 
-
 \section*{Objetivo y alcance}
-Empaquetar el clasificador de impulsores y tazones para que se pueda ejecutar con las mismas dependencias y los mismos pesos en otro equipo. Se reutiliza ResNet18, entrenada en la actividad 3.3, y se conserva el script de la 4.1. El sistema recibe una imagen recortada de una sola pieza y devuelve la clase elegida junto con su confianza.
 
-\section*{Preparación de la entrega}
-El repositorio reúne el modelo, el código, las dependencias y el dataset original con 25 fotografías y sus anotaciones. El \texttt{Dockerfile} parte de Python 3.12, instala PyTorch para CPU e incorpora los archivos necesarios para inferencia. Las huellas SHA-256 de los pesos y del script coinciden con las de la 4.1.
+El cuaderno de la unidad pide empaquetar el sistema y medir su ejecución en un contenedor (\textit{Cuaderno de trabajo}, s. f.). El clasificador de impulsores y tazones reutiliza los pesos de ResNet18 de la actividad 3.3 y el script de inferencia de la 4.1. El programa recibe un recorte de una sola pieza y devuelve la clase predicha y el porcentaje de confianza.
 
-\section*{Referencia en CPU}
-La prueba se realizó en Linux con Python 3.12.14, PyTorch 2.5.1+cpu y tres hilos. Se ejecutó el comando de inferencia con una imagen, un lote de hasta ocho recortes y un flujo con pausas de 0.1 s. Las dos modalidades usaron los mismos 33 recortes de la actividad 3.3.
+\section*{Componentes del paquete}
 
-\begin{table}[H]\centering\small
-\begin{tabular}{lrrrr}\toprule
-Modo & Imágenes & Proceso (s) & Operación (s) & ms/imagen \\\midrule
-Lote & 33 & 0.918 & 0.918 & 27.82 \\
-Flujo & 33 & 1.107 & 4.313 & 33.54 \\
-\bottomrule\end{tabular}
-\caption{Mediciones nativas de CPU en Linux.}
+El paquete integra el dataset original de 25 fotografías, sus anotaciones, los archivos de inferencia y el manual. El dataset conserva las anotaciones de flechas de bomba. Los pesos entregados clasifican impulsores y tazones. Se verificaron las huellas SHA-256 de los pesos y del script contra los archivos de la 4.1.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Archivos principales del repositorio.}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}X@{}}
+\toprule
+\textbf{Archivo o carpeta} & \textbf{Función} \\
+\midrule
+\texttt{models/modelo.pt} & Guarda los pesos y los parámetros de entrada del modelo. \\
+\texttt{src/pipeline\_inferencia.py} & Prepara las imágenes, ejecuta la red y escribe las predicciones. \\
+\texttt{data/origen/dataset\_bombas.zip} & Contiene las fotografías originales y sus anotaciones. \\
+\texttt{data/validacion/} & Reúne los 33 recortes usados para comprobar el despliegue. \\
+\texttt{Dockerfile} y \texttt{requirements.txt} & Definen la imagen base y las dependencias de CPU. \\
+\texttt{README.md} y \texttt{ejecutar\_docker.bat} & Documentan el uso y automatizan la prueba en Windows. \\
+\bottomrule
+\end{tabularx}
 \end{table}
 
-El lote y el flujo coincidieron en 33 predicciones. Se reprodujeron 32 aciertos de 33. El recorte \texttt{1\_008.png}, etiquetado como impulsor, volvió a clasificarse como tazón. Esta referencia permite comprobar si el contenedor reproduce las decisiones de la actividad 3.3.
+\section*{Instalación y operación}
 
-\begin{figure}[H]\centering
-\begin{minipage}{0.35\linewidth}\centering
-\includegraphics[height=27mm,width=44mm,keepaspectratio]{assets/4_000.png}\par
-{\small Impulsor, 95.85\%}
-\end{minipage}\hspace{4mm}%
-\begin{minipage}{0.35\linewidth}\centering
-\includegraphics[height=27mm,width=44mm,keepaspectratio]{assets/22_006.png}\par
-{\small Tazón, 99.65\%}
-\end{minipage}
-\caption{Predicciones de dos recortes incluidos y confianza de cada clase.}
-\end{figure}
+El \texttt{Dockerfile} parte de Python 3.12, instala las dependencias y copia los pesos, el código y las imágenes para inferencia. La imagen de Docker reúne esos archivos y el entorno de Python. El contenedor usa esa imagen para ejecutar la prueba.
+
+En Windows se abre Docker Desktop con contenedores Linux (Docker, Inc., s. f.). Desde la carpeta del proyecto, \texttt{docker version} permite confirmar que el cliente y el motor responden. El segundo comando construye la imagen y guarda la evidencia. El tercero clasifica un ejemplo y muestra su confianza en la consola.
+
+{\small
+\begin{verbatim}
+docker version
+.\ejecutar_docker.bat
+docker run --rm vision-bombas:4.2 --modo flujo --imagen data/ejemplos/4_000.png
+\end{verbatim}
+}
+
+En Linux se puede repetir la prueba completa con \texttt{bash ejecutar\_docker.sh}. El manual del repositorio explica cómo usar una fotografía propia y encontrar las salidas.
 
 \clearpage
-\section*{Ejecución en Docker}
-Docker Engine 28.5.2 corrió en una máquina virtual Linux. El script
-\texttt{ejecutar\_docker.sh} construyó la imagen y ejecutó las pruebas. El
-repositorio incluye \texttt{ejecutar\_docker.bat} para repetirlas en Windows.
+\section*{Procedimiento de validación}
 
-\input{mediciones_docker.tex}
+El script convierte cada recorte a RGB, ajusta su tamaño a \(224 \times 224\) píxeles y aplica los parámetros de normalización guardados con el modelo. ResNet18 asigna una puntuación a cada clase. El programa registra el archivo, la clase con mayor puntuación y su confianza en \texttt{predicciones.csv}.
 
-El tiempo de proceso incluye lectura, preparación, inferencia y posprocesamiento. La operación en flujo incluye las pausas. Se usó una CPU emulada en la prueba de Docker.
+En el contenedor se usaron los 33 recortes de validación de la actividad 3.3 en dos modalidades. En lote se agruparon hasta ocho recortes. En flujo se procesó uno por vez, con una pausa programada de 0.1 s entre imágenes. Se comprobó la clase predicha contra la etiqueta de cada recorte y se comparó con la predicción registrada en la 3.3.
 
-\begin{center}
-\begin{minipage}[c]{0.24\linewidth}\centering
-\includegraphics[height=23mm,width=\linewidth,keepaspectratio]{assets/impulsor_bomba_pozo.png}
+\section*{Medición del rendimiento}
+
+La imagen se construyó y se ejecutó con Docker Engine 28.5.2 en una máquina virtual Linux con CPU emulada. Su identificador abreviado es \texttt{9a7d6b304583}. La ejecución utilizó Python 3.12.16, PyTorch 2.5.1 para CPU y tres hilos.
+
+El tiempo de proceso suma la lectura, la preparación, la inferencia y el posprocesamiento de cada grupo. El tiempo de operación incluye las pausas de flujo. El cronómetro inicia después de la carga y una pasada de calentamiento. El tiempo de carga queda registrado aparte.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Tiempos medidos con los 33 recortes en cada modalidad.}
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+\textbf{Entorno} & \textbf{Modo} & \textbf{Proceso (s)} & \textbf{Operación (s)} & \textbf{ms por recorte} \\
+\midrule
+Linux nativo & Lote  & 0.918   & 0.918   & 27.82 \\
+Linux nativo & Flujo & 1.107   & 4.313   & 33.54 \\
+Docker, CPU emulada & Lote  & 136.723 & 136.724 & 4143.11 \\
+Docker, CPU emulada & Flujo & 140.392 & 143.635 & 4254.30 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+En Docker, el lote requirió 3.67 s menos de procesamiento para el mismo conjunto. En flujo, la operación duró 3.24 s más que el procesamiento, cifra cercana a los 3.2 s de las 32 pausas programadas. Los tiempos nativos sirven como referencia de una ejecución anterior en otro entorno. Las mediciones de Docker corresponden a las condiciones de la máquina virtual.
+
+\section*{Resultados por clase}
+
+Ambas modalidades en Docker reprodujeron las 33 predicciones de la 3.3 y obtuvieron 32 aciertos (96.97\,\%). El único error fue el recorte \texttt{1\_008.png}, cuya etiqueta era impulsor. En lote se clasificó como tazón con 60.43\,\% de confianza.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Clases reales y predichas en Docker.}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Clase real} & \textbf{Predicho impulsor} & \textbf{Predicho tazón} \\
+\midrule
+Impulsor & 15 & 1 \\
+Tazón    & 0  & 17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\section*{Prueba con una fotografía externa}
+
+El contenedor procesó un recorte de un impulsor de bomba de pozo fotografiado por Matt (2009). Esta imagen se incorporó después de la 3.3. El modelo predijo tazón con 85.47\,\% de confianza. En la pieza se aprecian depósitos y una apariencia distinta a la de los ejemplos de validación.
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.31\linewidth}
+\centering
+\includegraphics[height=24mm,width=\linewidth,keepaspectratio]{assets/4_000.png}\par
+{\small Real e inferida\\Impulsor, 95.85\,\%}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.70\linewidth}\small
-El recorte de Matt (2009) muestra una cara del impulsor con depósitos visibles. La discrepancia con la clase esperada indica que el puntaje de confianza puede ser alto incluso cuando el clasificador se equivoca en una pieza con una apariencia distinta.
+\begin{minipage}[t]{0.31\linewidth}
+\centering
+\includegraphics[height=24mm,width=\linewidth,keepaspectratio]{assets/22_006.png}\par
+{\small Real e inferida\\Tazón, 99.65\,\%}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\centering
+\includegraphics[height=24mm,width=\linewidth,keepaspectratio]{assets/impulsor_bomba_pozo.png}\par
+{\small Impulsor real\\Predijo tazón, 85.47\,\%}
 \end{minipage}
-\end{center}
+\caption{Predicciones en Docker para dos recortes de validación y la fotografía externa.}
+\end{figure}
 
-\section*{Entrega del proyecto}
-El README contiene el manual de instalación y uso. Los registros están en \texttt{evidencia\_docker/}. El profesor aceptó el reporte como evidencia de funcionamiento y permitió conservar la imagen localmente (L. A. Espejo Ponce, comunicación personal, 17 de noviembre de 2026).
+\section*{Alcance de los resultados}
 
-\ifx\LigaRepositorio\empty
-La liga privada se añade tras publicar el proyecto en GitHub.
-\else
-\href{\LigaRepositorio}{Abrir el repositorio privado de GitHub}.
-\fi
+Los 33 recortes de validación provienen de tres fotografías y permiten comprobar que se conservaron las decisiones del modelo. La prueba externa muestra que una confianza alta puede acompañar un error. Para evaluar el desempeño con piezas nuevas haría falta un conjunto independiente con distintas condiciones de captura.
 
-\textbf{Uso de IA.} ChatGPT apoyó la organización del paquete y la redacción. Las mediciones proceden de la ejecución documentada.
+\section*{Entrega y evidencia}
+
+El profesor aceptó el reporte como demostración y permitió reunir la entrega en la actividad 4.3 (L. A. Espejo Ponce, comunicación personal, 17 de noviembre de 2026). El README contiene el manual. En \texttt{evidencia\_docker/} están la construcción, el identificador de imagen, los CSV y la verificación.
+
+\href{\LigaRepositorio}{\textbf{Repositorio privado de GitHub}}\quad
+\href{\LigaRepositorio/blob/main/README.md}{Manual de instalación y uso}\quad
+\href{\LigaRepositorio/tree/main/evidencia_docker/20261126_045303_2304}{Registros de Docker}
+
+\textbf{Uso de IA.} ChatGPT apoyó la organización del paquete y la redacción del reporte.
 
 \section*{Referencias}
-\small
-\begin{hangparas}{0.7cm}{1}
+
+{\small
+\hangindent=0.7cm
 \textit{Cuaderno de trabajo: Unidad IV. Despliegue de un modelo de visión inteligente}. (s. f.). [Material de la asignatura Visión Inteligente].\par
+\hangindent=0.7cm
 Docker, Inc. (s. f.). \textit{Install Docker Desktop on Windows}. \url{https://docs.docker.com/desktop/setup/install/windows-install/}\par
+\hangindent=0.7cm
 Matt. (2009). \textit{Well pump with impeller} [Fotografía]. Wikimedia Commons. \url{https://commons.wikimedia.org/wiki/File:Well_Pump_with_impeller.JPG}\par
-\end{hangparas}
+}
+
 \end{document}

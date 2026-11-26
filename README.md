@@ -26,14 +26,14 @@ Cada ejecución guarda una carpeta nueva en `evidencia_docker/`. Encontrarás la
 Para demostrar una inferencia individual después de construir la imagen, ejecuta el comando siguiente desde PowerShell o Bash. La procedencia de la fotografía está en `data/prueba_externa/FUENTE.md`.
 
 ```text
-docker run --rm vision-bombas:4.2 --imagen data/prueba_externa/impulsor_bomba_pozo.png
+docker run --rm vision-bombas:4.2 --modo flujo --imagen data/prueba_externa/impulsor_bomba_pozo.png
 ```
 
 ## Reporte y evidencia
 
 El PDF incluye una ejecución en Docker Engine 28.5.2 sobre Linux virtual, además de la referencia en CPU. Los registros de la construcción, las predicciones y los tiempos medidos del contenedor están en `evidencia_docker/`. La referencia nativa está en `evidencia_local/`.
 
-Para actualizar el PDF después de repetir la prueba, copia `mediciones_docker.tex` de esa ejecución sobre `reporte/mediciones_docker.tex` y compila `reporte/main.tex` con pdfLaTeX. En Overleaf, carga los archivos `.tex` de `reporte/` junto con la carpeta `assets/`.
+El reporte se compila con pdfLaTeX desde `reporte/main.tex`. Para importarlo en Overleaf, carga `main.tex` y la carpeta `assets/` juntos en un ZIP, con `main.tex` en la raíz del proyecto. Si repites la prueba y quieres actualizar la tabla del reporte, usa las mediciones que la ejecución guarda junto a sus registros.
 
 El tiempo de procesamiento suma lectura, preparación, inferencia y posprocesamiento. En modo flujo, el tiempo de operación incluye las pausas de 0.1 s. Las 33 imágenes se reutilizan para comprobar consistencia. La foto externa prueba que el comando admite una entrada que quedó fuera del entrenamiento y de la validación.
 
